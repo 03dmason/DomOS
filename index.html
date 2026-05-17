@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DomOS — Personal Performance OS</title>
+  <meta name="theme-color" content="#080A0F" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="DomOS" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css?v=120" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/supabase-config.js?v=120"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Primary navigation">
+      <div class="brand-block">
+        <div class="brand-mark">D</div>
+        <div>
+          <div class="brand-title">DomOS</div>
+          <div class="brand-subtitle">Performance OS</div>
+        </div>
+      </div>
+
+      <nav class="side-nav">
+        <button class="nav-item active" data-view="today"><span>Today</span></button>
+        <button class="nav-item" data-view="week"><span>Week</span></button>
+        <button class="nav-item" data-view="modules"><span>Modules</span></button>
+        <button class="nav-item" data-view="log"><span>Log</span></button>
+        <button class="nav-item" data-view="checkins"><span>Check-ins</span></button>
+        <button class="nav-item" data-view="products"><span>Products</span></button>
+        <button class="nav-item" data-view="data"><span>Data</span></button>
+        <button class="nav-item" data-view="settings"><span>Settings</span></button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sync-dot" id="syncDot"></div>
+        <div>
+          <div class="sidebar-small" id="syncLabel">Local mode</div>
+          <div class="sidebar-tiny" id="authLabel">Supabase not configured</div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow" id="pageEyebrow">Command centre</div>
+          <h1 id="pageTitle">Today</h1>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn ghost" id="refreshBtn" type="button">Refresh</button>
+          <button class="btn primary" id="quickLogBtn" type="button">Quick log</button>
+        </div>
+      </header>
+
+      <section id="view-today" class="view active"></section>
+      <section id="view-week" class="view"></section>
+      <section id="view-modules" class="view"></section>
+      <section id="view-log" class="view"></section>
+      <section id="view-checkins" class="view"></section>
+      <section id="view-products" class="view"></section>
+      <section id="view-data" class="view"></section>
+      <section id="view-settings" class="view"></section>
+    </main>
+  </div>
+
+  <nav class="mobile-nav" aria-label="Mobile navigation">
+    <button class="mobile-nav-item active" data-view="today">Today</button>
+    <button class="mobile-nav-item" data-view="week">Week</button>
+    <button class="mobile-nav-item" data-view="modules">Modules</button>
+    <button class="mobile-nav-item" data-view="log">Log</button>
+    <button class="mobile-nav-item" data-view="data">Data</button>
+  </nav>
+
+  <div class="modal-backdrop" id="modalBackdrop" hidden aria-hidden="true" style="display:none">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-head">
+        <div>
+          <div class="eyebrow" id="modalEyebrow">DomOS</div>
+          <h2 id="modalTitle">Quick log</h2>
+        </div>
+        <button class="icon-btn" id="modalClose" type="button" aria-label="Close" data-modal-close onclick="window.closeDomOSModal && window.closeDomOSModal()">×</button>
+      </div>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="assets/domos-data.js?v=120"></script>
+  <script src="assets/app.js?v=120"></script>
+</body>
+</html>
