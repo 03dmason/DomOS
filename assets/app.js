@@ -234,12 +234,16 @@ function openModal(title, body, eyebrow = "DomOS") {
   $("#modalTitle").textContent = title;
   $("#modalEyebrow").textContent = eyebrow;
   $("#modalBody").innerHTML = body;
-  $("#modalBackdrop").hidden = false;
+  const backdrop = $("#modalBackdrop");
+  backdrop.hidden = false;
+  backdrop.style.display = "flex";
   document.body.classList.add("modal-open");
   requestAnimationFrame(() => $("#modalClose")?.focus?.());
 }
 function closeModal() {
-  $("#modalBackdrop").hidden = true;
+  const backdrop = $("#modalBackdrop");
+  backdrop.hidden = true;
+  backdrop.style.display = "none";
   $("#modalBody").innerHTML = "";
   document.body.classList.remove("modal-open");
 }
