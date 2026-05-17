@@ -340,3 +340,7 @@ tr:last-child td { border-bottom: none; }
 body.modal-open { overflow: hidden; }
 #modalClose { position: relative; z-index: 5; flex-shrink: 0; cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
 .modal .eyebrow { text-transform: none; letter-spacing: 0.12em; }
+
+
+/* DomOS v1.1.2 fix: ensure hidden modal is genuinely hidden even though .modal-backdrop uses display:flex */
+.modal-backdrop[hidden] { display: none !important; }
