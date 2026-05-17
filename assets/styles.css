@@ -247,7 +247,7 @@ tr:last-child td { border-bottom: none; }
 .modal-backdrop {
   position: fixed; inset: 0;
   z-index: 300;
-  display: flex;
+  display: none;
   align-items: flex-end;
   justify-content: center;
   background: rgba(0,0,0,0.72);
@@ -344,3 +344,8 @@ body.modal-open { overflow: hidden; }
 
 /* DomOS v1.1.2 fix: ensure hidden modal is genuinely hidden even though .modal-backdrop uses display:flex */
 .modal-backdrop[hidden] { display: none !important; }
+
+
+/* DomOS v1.1.3: modal is closed by default and only opens with .is-open. */
+#modalBackdrop:not(.is-open), #modalBackdrop[hidden] { display: none !important; pointer-events: none !important; }
+#modalBackdrop.is-open { display: flex !important; pointer-events: auto !important; }
