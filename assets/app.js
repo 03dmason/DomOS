@@ -26,6 +26,7 @@ function getConfig() {
 }
 
 async function init() {
+  forceCloseModal();
   setupNavigation();
   setupModal();
   setupActions();
@@ -207,9 +208,22 @@ function navigate(view) {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
+function forceCloseModal() {
+  const backdrop = $("#modalBackdrop");
+  if (!backdrop) return;
+  backdrop.classList.remove("is-open");
+  backdrop.setAttribute("aria-hidden", "true");
+  backdrop.hidden = true;
+  backdrop.style.display = "none";
+  const body = $("#modalBody");
+  if (body) body.innerHTML = "";
+  document.body.classList.remove("modal-open");
+}
+
 function setupModal() {
   const closeBtn = $("#modalClose");
   const backdrop = $("#modalBackdrop");
+  forceCloseModal();
 
   const hardClose = (e) => {
     if (e) {
@@ -228,24 +242,25 @@ function setupModal() {
   backdrop.addEventListener("click", e => { if (e.target === backdrop) hardClose(e); });
   backdrop.addEventListener("pointerdown", e => { if (e.target === backdrop) hardClose(e); });
   document.addEventListener("keydown", e => { if (e.key === "Escape" && !backdrop.hidden) hardClose(e); });
+  document.addEventListener("click", e => {
+    if (e.target?.closest?.("#modalClose,[data-modal-close]")) hardClose(e);
+  });
   window.closeDomOSModal = closeModal;
 }
 function openModal(title, body, eyebrow = "DomOS") {
+  const backdrop = $("#modalBackdrop");
   $("#modalTitle").textContent = title;
   $("#modalEyebrow").textContent = eyebrow;
   $("#modalBody").innerHTML = body;
-  const backdrop = $("#modalBackdrop");
   backdrop.hidden = false;
+  backdrop.removeAttribute("aria-hidden");
+  backdrop.classList.add("is-open");
   backdrop.style.display = "flex";
   document.body.classList.add("modal-open");
   requestAnimationFrame(() => $("#modalClose")?.focus?.());
 }
 function closeModal() {
-  const backdrop = $("#modalBackdrop");
-  backdrop.hidden = true;
-  backdrop.style.display = "none";
-  $("#modalBody").innerHTML = "";
-  document.body.classList.remove("modal-open");
+  forceCloseModal();
 }
 function toast(msg) {
   const t = $("#toast");
@@ -693,5 +708,6 @@ function downloadFile(name, content, type) { const blob = new Blob([content], { 
 
 window.navigate = navigate;
 window.showQuickLog = showQuickLog;
+window.forceCloseModal = forceCloseModal;
 
 init().catch(err => { console.error(err); toast("DomOS failed to initialise — check console"); });
