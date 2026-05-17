@@ -334,3 +334,9 @@ tr:last-child td { border-bottom: none; }
   .card { padding: 15px; }
   .metric-value { font-size: 26px; }
 }
+
+
+/* DomOS v1.1.1 fixes */
+body.modal-open { overflow: hidden; }
+#modalClose { position: relative; z-index: 5; flex-shrink: 0; cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+.modal .eyebrow { text-transform: none; letter-spacing: 0.12em; }
