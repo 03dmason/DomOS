@@ -208,16 +208,41 @@ function navigate(view) {
 }
 
 function setupModal() {
-  $("#modalClose").addEventListener("click", closeModal);
-  $("#modalBackdrop").addEventListener("click", e => { if (e.target.id === "modalBackdrop") closeModal(); });
+  const closeBtn = $("#modalClose");
+  const backdrop = $("#modalBackdrop");
+
+  const hardClose = (e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    closeModal();
+  };
+
+  // iOS Safari can occasionally miss normal click events on fixed bottom sheets,
+  // so bind pointer/touch/click and expose a global close fallback.
+  ["click", "pointerup", "touchend"].forEach(evt => {
+    closeBtn.addEventListener(evt, hardClose, { passive: false });
+  });
+
+  backdrop.addEventListener("click", e => { if (e.target === backdrop) hardClose(e); });
+  backdrop.addEventListener("pointerdown", e => { if (e.target === backdrop) hardClose(e); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && !backdrop.hidden) hardClose(e); });
+  window.closeDomOSModal = closeModal;
 }
 function openModal(title, body, eyebrow = "DomOS") {
   $("#modalTitle").textContent = title;
   $("#modalEyebrow").textContent = eyebrow;
   $("#modalBody").innerHTML = body;
   $("#modalBackdrop").hidden = false;
+  document.body.classList.add("modal-open");
+  requestAnimationFrame(() => $("#modalClose")?.focus?.());
 }
-function closeModal() { $("#modalBackdrop").hidden = true; $("#modalBody").innerHTML = ""; }
+function closeModal() {
+  $("#modalBackdrop").hidden = true;
+  $("#modalBody").innerHTML = "";
+  document.body.classList.remove("modal-open");
+}
 function toast(msg) {
   const t = $("#toast");
   t.textContent = msg;
